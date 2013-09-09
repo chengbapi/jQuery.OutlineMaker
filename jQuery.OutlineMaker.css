@@ -1,0 +1,6 @@
+.outline-maker ul{list-style: none;, padding: 20px;}
+.outline-maker ul{display: none;}
+.outline-maker > ul{display: block; padding: 0;}
+.outline-maker .hook{color: #666; display: block;}
+.outline-maker li.active > .hook{color:#1080ef; border-right: 5px solid #1080ef;}
+.outline-maker li.active > ul{display: block;}
