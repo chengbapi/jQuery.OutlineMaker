@@ -54,7 +54,7 @@
 
     });
 
-    function Outline(options, roottarget) {
+    function Outline(options, rootTarget) {
         var self = this,
             allTitles,
             levelsStargetctor;
@@ -65,7 +65,7 @@
         this.insertPoint = this.root;
 
         levelsStargetctor = this.options.levels.join(',');
-        allTitles = $(levelsStargetctor, roottarget);
+        allTitles = $(levelsStargetctor, rootTarget);
 
         this.titles = []; /* a flat array for calculating */
 
