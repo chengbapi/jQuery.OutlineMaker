@@ -1,5 +1,6 @@
 .outline-maker {background-color: #f5f5f5; padding: 15px 0 15px 20px; border-radius: 3px;}
-.outline-maker ul{list-style: none; padding-left: 25px;}
+.outline-maker .number{margin-right: 10px;}
+.outline-maker ul{list-style: none; padding-left: 25px; display: none;}
 .outline-maker > ul{display: block; padding: 0; margin: 0; }
 .outline-maker .hook{color: #666; display: block; cursor: pointer;-webkit-transition: border .3s, color .5s; border-right: 3px solid #f5f5f5; }
 .outline-maker li.active > .hook{color:#1080ef; border-right: 3px solid #1080ef;}

@@ -7,6 +7,7 @@
     <script src="jQuery.OutlineMaker.js" type="text/javascript"></script>
     <link media="all" rel="stylesheet" href="jQuery.OutlineMaker.css" type="text/css" />
     <style type="text/css">
+        body {font-family: "Helvetica Neue",Arial,sans-serif; font-size: 120%; line-height: 1.4;}
         .container {width: 40%; margin: 0 auto; margin-bottom: 700px;}
         #target {width: 20%;  position: fixed; left:0; top: 20%;}
     </style>
@@ -101,7 +102,7 @@ Productions of the numeric string grammar are distinguished by having three colo
     <div id="target"></div>
 
     <script type="text/javascript">
-        $(".container").OutlineMaker({ target: document.getElementById('target') });
+        $(".container").OutlineMaker({ target: document.getElementById('target'), number: true });
     </script>
 </body>
 </html>

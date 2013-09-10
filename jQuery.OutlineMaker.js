@@ -1,34 +1,29 @@
-(function($) {
+;(function($) {
     var
-        defaults = {
+        _config = {
             target: document.body,
-            levels: ['h1', 'h2', 'h3', 'h4'],
-            offset: 300
+            levels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            host: window,
+            offset: 300,
+            number: false,
+            numberSplit: '.',
+            deep: false
         };
 
-
-    function Title(target, outline) {
-        this.initAttr(target, outline);
+    function Header(origin, outline) {
+        this.$origin = $(origin);
+        this.initLevel(outline.config.levels);
+        this.initSup(outline.insertPoint);
+        this.initNumber();
+        this.initText(outline.config);
         this.initDOM();
-
-        outline.insertPoint = this;
     }
 
-    $.extend(Title.prototype, {
-        initAttr: function (target, outline) {
-            this.$target = $(target);
-            this.initText();
-            this.initLevel(outline.options.levels);
-            this.initSup(outline.insertPoint);
-        },
-        initText: function() {
-            var text = this.$target.data('text');
-            return this.text = text ? text : this.$target.text();
-        },
+    $.extend(Header.prototype, {
         initLevel: function(levels) {
             var i;
             for (i = 0; i < levels.length; i++) {
-                if (this.$target.is(levels[i])) {
+                if (this.$origin.is(levels[i])) {
                     return this.level = i + 1;
                 }
             }
@@ -39,6 +34,21 @@
             }
             this.sup = insertPoint;
             this.sup.addSub(this);
+        },
+        initNumber: function() {
+            this.number = this.sup.number.concat(this.sup.subs.length);
+        },
+        initText: function(config) {
+            var number;
+
+            this.text = this.$origin.data('text') || this.$origin.text();
+            if (config.number) {
+                number = this.number.join(config.numberSplit);
+                this.text = "<span class='number'>" + number + "</span>" + this.text;
+                console.log(this.text);
+            }
+
+
         },
         initDOM: function() {
             this.DOM = $("<li><span class='hook'>" + this.text + "</span></li>").data("model", this);
@@ -51,32 +61,61 @@
             }
             return this.subs.push(sub);
         }
-
     });
 
-    function Outline(options, rootTarget) {
-        var self = this,
-            allTitles,
-            levelsStargetctor;
 
-        this.options = $.extend({}, defaults, options);
-        this.root = { level: 0, subs: [], addSub: Title.prototype.addSub };
+    /**
+     * Class making a outline with given config in rootTarget
+     * @param {Object} config to init outline
+     * @param {jQuery.Element} search headers from this jQuery.Element
+     * @constructor
+     */
+
+    /**
+     * Sample of config
+     * config = {
+     *     levels: {Array.<QuerySelector>}
+     *     target: {Element} dest where to put outline
+     *     host: {Element} add scroll event listener on this host
+     *     offset: {Number} when the margin between top of header and top border
+     *             of host less than offset will trigger render event
+     *     number: add number index before header
+     *     deep: {Boolean} whether to search headers recursely into rootTarget
+     * }
+     */
+
+    function Outline(config, rootTarget) {
+        var self = this,
+            origins,
+            levelSelector;
+
+        this.config = $.extend({}, _config, config);
+
+        this.host = $(this.config.host);
+        this.root = { level: 0, subs: [], number: [], addSub: Header.prototype.addSub };
         this.root.DOM = $("<div class='outline-maker'></div>");
         this.insertPoint = this.root;
 
-        levelsStargetctor = this.options.levels.join(',');
-        allTitles = $(levelsStargetctor, rootTarget);
+        levelSelector = this.config.levels.join(',');
 
-        this.titles = []; /* a flat array for calculating */
+        if (this.config.deep) {
+            origins = $(levelSelector, rootTarget);
+        } else {
+            origins = $(rootTarget).children(levelSelector);
+        }
 
-        allTitles.each(function(v, i, a) {
-            self.titles.push(new Title(this, self));
+        this.headers = []; /* a flat array for calculating */
+
+        origins.each(function(i, origin) {
+            var header = new Header(origin, self)
+            self.headers.push(header);
+            self.insertPoint = header;
         });
 
         /* render DOM */
         this.DOM = recurseRender(this.root);
 
-        $(this.options.target).append(this.DOM)
+        $(this.config.target).append(this.DOM)
 
         this.bindEvent();
 
@@ -85,12 +124,11 @@
 
     $.extend(Outline.prototype, {
         refresh: function() {
-            $(window).trigger("scroll");
+            $(this.host).trigger("scroll");
         },
         to: function(title) {
-            console.log(title);
             // scroll window to particular position
-            $(window).scrollTop(title.pos.top);
+            $(this.host).scrollTop(title.pos.top);
             // render outline
             this.render(title);
         },
@@ -102,11 +140,24 @@
             }
         },
         refreshPos: function() {
-            $.each(this.titles, function(i, title) {
-                var offset = title.$target.offset();
+            var self = this;
+            $.each(this.headers, function(i, title) {
+                var
+                    hostOffset = self.host.offset(),
+                    offset = title.$origin.offset();
+
+                // when host is window or document
+                // host.offset() return undefinded
+                if (!hostOffset) {
+                    hostOffset = {
+                        top: 0,
+                        left: 0
+                    }
+                }
+
                 title.pos = {
-                    top: offset.top,
-                    left: offset.left
+                    top: offset.top - hostOffset.top,
+                    left: offset.left - hostOffset.left
                 }
             });
             this.refresh();
@@ -119,13 +170,13 @@
                 e.stopPropagation();
             });
             // window scroll / resize event
-            $(window).on("scroll", function() {
+            $(this.host).on("scroll", function() {
                 var i,
-                    titles = self.titles,
+                    headers = self.headers,
                     scrollTop = $(this).scrollTop(),
                     scrollLeft = $(this).scrollLeft();
 
-                self.render(getCurrentTitle(titles, scrollTop, scrollLeft, self.options.offset));
+                self.render(getCurrentHeader(headers, scrollTop, scrollLeft, self.config.offset));
             });
             $(window).on("resize", function() {
                 self.refreshPos();
@@ -149,17 +200,17 @@
         return title.DOM;
     }
 
-    function getCurrentTitle(titles, scrollTop, scrollLeft, offset) {
+    function getCurrentHeader(headers, scrollTop, scrollLeft, offset) {
         var i,
             prev,
             next;
-        if (titles[0].pos.top >= scrollTop) {
-            return titles[0];
+        if (headers[0].pos.top >= scrollTop) {
+            return headers[0];
         }
 
-        for (i = 0; i + 1 < titles.length; i++) {
-            prev = titles[i];
-            next = titles[i + 1];
+        for (i = 0; i + 1 < headers.length; i++) {
+            prev = headers[i];
+            next = headers[i + 1];
             if (prev.pos.top < scrollTop && next.pos.top > scrollTop) {
                 if (next.pos.top - scrollTop < offset ) {
                     return next;
@@ -171,8 +222,8 @@
         return next;
     }
 
-    function OutlineMaker(options) {
-        return new Outline(options, this);
+    function OutlineMaker(config) {
+        return new Outline(config, this);
     }
 
     $.fn.extend({
