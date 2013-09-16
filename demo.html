@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="jQuery.OutlineMaker.js" type="text/javascript"></script>
+    <link media="all" rel="stylesheet" href="jQuery.OutlineMaker.css" type="text/css" />
+    <style type="text/css">
+        body {font-family: "Helvetica Neue",Arial,sans-serif; font-size: 120%; line-height: 1.4;}
+        .container {width: 40%; margin: 0 auto; margin-bottom: 700px;}
+        #target {width: 20%;  position: fixed; left:0; top: 20%;}
+    </style>
+</head>
+<body>
+    <h1 style='text-align: center'>Standard ECMA-262</h1>
+    <div class="container">
+        <h1>Scope</h1>
+        <p>
+            This Standard defines the ECMAScript scripting language.
+        </p>
+        <h1>Conformance</h1>
+        <p>
+            A conforming implementation of ECMAScript must provide and support all the types, values, objects, properties, functions, and program syntax and semantics described in this specification.
+        </p>
+        <p>
+A conforming implementation of this Standard shall interpret characters in conformance with the Unicode Standard, Version 3.0 or later and ISO/IEC 10646-1 with either UCS-2 or UTF-16 as the adopted encoding form, implementation level 3. If the adopted ISO/IEC 10646-1 subset is not otherwise specified, it is presumed to be the BMP subset, collection 300. If the adopted encoding form is not otherwise specified, it presumed to be the UTF-16 encoding form.
+        </p>
+        <h1>Normative references</h1>
+        <p>
+            The following referenced documents are indispensable for the application of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.
+        </p>
+        <h1>Overview</h1>
+
+        <p>
+            This section contains a non-normative overview of the ECMAScript language.
+        </p>
+        <p>
+ECMAScript is an object-oriented programming language for performing computations and manipulating computational objects within a host environment. ECMAScript as defined here is not intended to be computationally self-sufficient; indeed, there are no provisions in this specification for input of external data or output of computed results. Instead, it is expected that the computational environment of an ECMAScript program will provide not only the objects and other facilities described in this specification but also certain environment-specific host objects, whose description and behaviour are beyond the scope of this specification except to indicate that they may provide certain properties that can be accessed and certain functions that can be called from an ECMAScript program.
+        </p>
+        <h2>Web Scripting</h2>
+        <p>
+            A web browser provides an ECMAScript host environment for client-side computation including, for instance, objects that represent windows, menus, pop-ups, dialog boxes, text areas, anchors, frames, history, cookies, and input/output. Further, the host environment provides a means to attach scripting code to events such as change of focus, page and image loading, unloading, error and abort, selection, form submission, and mouse actions. Scripting code appears within the HTML and the displayed page is a combination of user interface elements and fixed and computed text and images. The scripting code is reactive to user interaction and there is no need for a main program.
+        </p>
+        <h2>Language Overview</h2>
+        <p>
+            The following is an informal overview of ECMAScript—not all parts of the language are described. This overview is not part of the standard proper.
+        </p>
+        <p>
+ECMAScript is object-based: basic language and host facilities are provided by objects, and an ECMAScript program is a cluster of communicating objects. An ECMAScript object is a collection of properties each with zero or more attributes that determine how each property can be used—for example, when the Writable attribute for a property is set to false, any attempt by executed ECMAScript code to change the value of the property fails. Properties are containers that hold other objects, primitive values, or functions. A primitive value is a member of one of the following built-in types: Undefined, Null, Boolean, Number, and String; an object is a member of the remaining built-in type Object; and a function is a callable object. A function that is associated with an object via a property is a method.
+        </p>
+        <h3>Objects</h3>
+        <p>
+            ECMAScript does not use classes such as those in C++, Smalltalk, or Java. Instead objects may be created in various ways including via a literal notation or via constructors which create objects and then execute code that initialises all or part of them by assigning initial values to their properties. Each constructor is a function that has a property named ―prototype‖ that is used to implement prototype-based inheritance and shared properties. Objects are created by using constructors in new expressions; for example, new Date(2009,11) creates a new Date object. Invoking a constructor without using new has consequences that depend on the constructor. For example, Date() produces a string representation of the current date and time rather than an object.
+        </p>
+        <p>
+Every object created by a constructor has an implicit reference (called the object‘s prototype) to the value of its constructor‘s ―prototype‖ property. Furthermore, a prototype may have a non-null implicit reference to its prototype, and so on; this is called the prototype chain. When a reference is made to a property in an object, that reference is to the property of that name in the first object in the prototype chain that contains a property of that name. In other words, first the object mentioned directly is examined for such a property; if that object contains the named property, that is the property to which the reference refers; if that object does not contain the named property, the prototype for that object is examined next; and so on.
+        </p>
+        <h3>The strict Vairant of ECMAScript</h3>
+        <p>
+            The ECMAScript Language recognises the possibility that some users of the language may wish to restrict their usage of some features available in the language. They might do so in the interests of security, to avoid what they consider to be error-prone features, to get enhanced error checking, or for other reasons of their choosing. In support of this possibility, ECMAScript defines a strict variant of the language. The strict variant of the language excludes some specific syntactic and semantic features of the regular ECMAScript language and modifies the detailed semantics of some features. The strict variant also specifies additional error conditions that must be reported by throwing error exceptions in situations that are not specified as errors by the non-strict form of the language.
+        </p>
+        <h2>Terms and definitions</h2>
+        <p>
+            For the purposes of this document, the following terms and definitions apply.
+        </p>
+        <h1>National Conventions</h1>
+        <h2>Syntactic and Lexical Grammars</h2>
+        <h3>Context-Free Grammars</h3>
+        <p>
+            A context-free grammar consists of a number of productions. Each production has an abstract symbol called a nonterminal as its left-hand side, and a sequence of zero or more nonterminal and terminal symbols as its right-hand side. For each grammar, the terminal symbols are drawn from a specified alphabet.
+        </p>
+        <h3>The Lexical and RegExp Grammars</h3>
+        <p>
+            A lexical grammar for ECMAScript is given in clause 7. This grammar has as its terminal symbols characters (Unicode code units) that conform to the rules for SourceCharacter defined in Clause 6. It defines a set of productions, starting from the goal symbol InputElementDiv or InputElementRegExp, that describe how sequences of such characters are translated into a sequence of input elements.
+        </p>
+        <p>
+Input elements other than white space and comments form the terminal symbols for the syntactic grammar for ECMAScript and are called ECMAScript tokens. These tokens are the reserved words, identifiers, literals, and punctuators of the ECMAScript language. Moreover, line terminators, although not considered to be tokens, also become part of the stream of input elements and guide the process of automatic semicolon insertion (7.9). Simple white space and single-line comments are discarded and do not appear in the stream of input elements for the syntactic grammar. A MultiLineComment (that is, a comment of the form ―/*...*/‖ regardless of whether it spans more than one line) is likewise simply discarded if it contains no line terminator; but if a MultiLineComment contains one or more line terminators, then it is replaced by a single line terminator, which becomes part of the stream of input elements for the syntactic grammar.
+        </p>
+        <p>
+A RegExp grammar for ECMAScript is given in 15.10. This grammar also has as its terminal symbols the characters as defined by SourceCharacter. It defines a set of productions, starting from the goal symbol Pattern, that describe how sequences of characters are translated into regular expression patterns.
+        </p>
+        <p>
+Productions of the lexical and RegExp grammars are distinguished by having two colons ―::‖ as separating punctuation. The lexical and RegExp grammars share some productions.
+        </p>
+        <p>
+            Starting from a sentence consisting of a single distinguished nonterminal, called the goal symbol, a given context-free grammar specifies a language, namely, the (perhaps infinite) set of possible sequences of terminal symbols that can result from repeatedly replacing any nonterminal in the sequence with a right-hand side of a production for which the nonterminal is the left-hand side.
+        </p>
+        <h3>The Numeric String Grammar</h3>
+        <p>
+            Another grammar is used for translating Strings into numeric values. This grammar is similar to the part of the lexical grammar having to do with numeric literals and has as its terminal symbols SourceCharacter. This grammar appears in 9.3.1.
+        </p>
+        <p>
+Productions of the numeric string grammar are distinguished by having three colons ―:::‖ as punctuation.
+        </p>
+        <h2>Algorithm Conventions</h2>
+        <p>
+            The specification often uses a numbered list to specify steps in an algorithm. These algorithms are used to precisely specify the required semantics of ECMAScript language constructs. The algorithms are not intended to imply the use of any specific implementation technique. In practice, there may be more efficient algorithms available to implement a given feature.
+        </p>
+    </div>
+
+    <div id="target"></div>
+
+    <script type="text/javascript">
+        $(".container").OutlineMaker({ target: document.getElementById('target'), number: true });
+    </script>
+</body>
+</html>
