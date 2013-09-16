@@ -80,7 +80,7 @@
      *     offset: {Number} when the margin between top of header and top border
      *             of host less than offset will trigger render event
      *     number: add number index before header
-     *     deep: {Boolean} whether to search headers recursely into rootTarget
+     *     deep: {Boolean} whether to search headers recursely in rootTarget
      * }
      */
 
