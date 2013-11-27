@@ -8,11 +8,39 @@
     <link media="all" rel="stylesheet" href="jQuery.OutlineMaker.css" type="text/css" />
     <style type="text/css">
         body {font-family: "Helvetica Neue",Arial,sans-serif; font-size: 120%; line-height: 1.4;}
+        #tip {
+            margin: 0 auto;
+            font-size: 80%;
+            padding: 1% 3%;
+            width: 50%;
+            color: #888;
+            background: #ddd;
+        }
         .container {width: 40%; margin: 0 auto; margin-bottom: 700px;}
         #target {width: 20%;  position: fixed; left:0; top: 20%;}
     </style>
 </head>
 <body>
+    <div id="tip">
+        <pre>
+$(container).OutlineMaker(config);
+
+config = {
+  levels: {Array.QuerySelector}
+  target: {Element} dest where to put outline
+  host: {Element} add scroll event listener on this host
+  offset: {Number} when the margin between top of header and top border
+          of host less than offset will trigger render event
+  number: add number index before header
+  deep: {Boolean} whether to search headers recursely in rootTarget
+}
+        </pre>
+        <h4>Example below:</h4>
+        <pre>
+$(".container").OutlineMaker({ target: document.getElementById('target'), number: true });
+        </pre>
+    </div>
+
     <h1 style='text-align: center'>Standard ECMA-262</h1>
     <div class="container">
         <h1>Scope</h1>
@@ -106,3 +134,4 @@ Productions of the numeric string grammar are distinguished by having three colo
     </script>
 </body>
 </html>
+
